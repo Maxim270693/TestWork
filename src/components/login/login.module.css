@@ -1,3 +1,45 @@
+.login {
+    display: flex;
+    justify-content: center;
+}
 .form {
-    display: table-caption;
+    margin-top: 150px;
+    text-align: center;
+}
+.input {
+    display: block;
+    width: 250px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+    background: white;
+    line-height: 30px;
+    border: 1px solid black;
+    border-radius: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+.input:focus {
+    box-shadow: 0 0 2px black;
+    outline: 0;
+}
+.input:hover {
+    box-shadow: 0 0 2px black;
+}
+.label {
+    color: palevioletred;
+}
+.error {
+    color: red;
+}
+.btn {
+    padding: 5px 10px;
+    border-radius: 7px;
+    background: palevioletred;
+    color: revert;
+    font-size: 16px;
+    letter-spacing: 0.09em;
+    cursor: pointer;
+}
+.btn:hover {
+    background: #95546c;
+    color: #fff
 }
