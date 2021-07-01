@@ -1,6 +1,10 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import s from './login.module.css'
+import {useDispatch, useSelector} from "react-redux";
+import {loginTC} from "../../main/bll/reducers/AuthReducer";
+import {RootStateType} from "../../main/bll/store/store";
+import {Redirect} from 'react-router-dom';
 
 type FormikType = {
     email?: string
@@ -8,6 +12,9 @@ type FormikType = {
 }
 
 export const Login = () => {
+
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector<RootStateType, boolean>((state) => state.auth.isLoggedIn)
 
     const validate = (values: any) => {
         const errors: FormikType = {};
@@ -20,8 +27,8 @@ export const Login = () => {
 
         if (!values.password) {
             errors.password = 'Required';
-        } else if (values.password.length < 7) {
-            errors.password = 'Пароль должен быть более 7 символов';
+        } else if (values.password.length < 3) {
+            errors.password = 'Пароль должен быть более 3 символов';
         }
 
         return errors;
@@ -29,38 +36,46 @@ export const Login = () => {
 
     const formik = useFormik({
         initialValues: {
+            clientId: 1,
             email: '',
             password: ''
         },
         validate,
         onSubmit: values => {
-            alert(JSON.stringify(values));
+            dispatch(loginTC(values))
             formik.resetForm();
         },
     });
+
+    if (isLoggedIn) {
+        return <Redirect to={'/'}/>
+    }
+
     return (
-       <div className={s.login}>
-           <form onSubmit={formik.handleSubmit} className={s.form}>
-               <label htmlFor="email" className={s.label}>Email Address</label>
-               <input
-                   className={s.input}
-                   id="email"
-                   type="email"
-                   {...formik.getFieldProps('email')}
-               />
-               {formik.touched.email && formik.errors.email ? <div className={s.error}>{formik.errors.email}</div> : null}
+        <div className={s.login}>
+            <form onSubmit={formik.handleSubmit} className={s.form}>
+                <label htmlFor="email" className={s.label}>Email Address</label>
+                <input
+                    className={s.input}
+                    id="email"
+                    type="email"
+                    {...formik.getFieldProps('email')}
+                />
+                {formik.touched.email && formik.errors.email ?
+                    <div className={s.error}>{formik.errors.email}</div> : null}
 
-               <label htmlFor="email" className={s.label}>Password</label>
-               <input
-                   className={s.input}
-                   id="password"
-                   type="password"
-                   {...formik.getFieldProps('password')}
-               />
-               {formik.touched.password && formik.errors.password ? <div className={s.error}>{formik.errors.password}</div> : null}
+                <label htmlFor="email" className={s.label}>Password</label>
+                <input
+                    className={s.input}
+                    id="password"
+                    type="password"
+                    {...formik.getFieldProps('password')}
+                />
+                {formik.touched.password && formik.errors.password ?
+                    <div className={s.error}>{formik.errors.password}</div> : null}
 
-               <button type="submit" className={s.btn}>Submit</button>
-           </form>
-       </div>
+                <button type="submit" className={s.btn}>Submit</button>
+            </form>
+        </div>
     );
 };
