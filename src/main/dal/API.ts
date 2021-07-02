@@ -7,7 +7,27 @@ const instance = axios.create({
 export const authAPI = {
     login(data: LoginParamsType) {
         return instance.post<ResponseType>('/api/auth/user', data)
+    },
+    me(token: string) {
+        return instance.get<ResponseMeType>('/api/tager/user/profile', {headers: {'Authorization': `Bearer ${token}` }})
+    },
+    logOut(token: string) {
+        return instance.post<ResponseLogOutType>('/api/tager/user/profile/logout',{}, {headers: {'Authorization': `Bearer ${token}` }})
     }
+}
+
+export type ResponseLogOutType = {
+    success: boolean
+}
+
+export type ResMeType = {
+    email: string
+    id: number
+    name: string
+}
+
+type ResponseMeType = {
+    data: ResMeType
 }
 
 export type LoginParamsType = {
@@ -27,5 +47,4 @@ type DataType = {
 type ResponseType = {
     data: DataType
 }
-
 

@@ -16,6 +16,7 @@ export const Login = () => {
     const dispatch = useDispatch()
     const isLoggedIn = useSelector<RootStateType, boolean>((state) => state.auth.isLoggedIn)
 
+
     const validate = (values: any) => {
         const errors: FormikType = {};
 
@@ -50,6 +51,8 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Redirect to={'/'}/>
     }
+
+
 
     return (
         <div className={s.login}>
