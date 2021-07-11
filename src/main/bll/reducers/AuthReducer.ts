@@ -49,7 +49,6 @@ export const loginTC = (data: LoginParamsType) => (dispatch: ThunkDispatch<RootS
     dispatch(setInitializedAC(true))
     authAPI.login(data)
         .then((res) => {
-            debugger
             dispatch(setIsLoggedInAC(true, res.data.data.accessToken))
             dispatch(setMeTC())
         })
@@ -80,14 +79,11 @@ export const setMeTC = () => (dispatch: ThunkDispatch<RootStateType, unknown, Ac
 export const logOutTC = () => (dispatch: ThunkDispatch<RootStateType, unknown, ActionType>, getState: () => RootStateType) => {
     const token = getState().auth.accessToken
     dispatch(setInitializedAC(true))
-    debugger
     authAPI.logOut(token)
         .then((res) => {
-            debugger
             dispatch(setIsLoggedInAC(true, token))
         })
         .catch((error) => {
-            debugger
             alert(error.response.data.message)
         })
         .finally(() => {
